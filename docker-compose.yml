@@ -1,0 +1,57 @@
+version: "3.3"
+services:
+
+  php-sg:
+    build:
+      context: ./docker/php
+    container_name: php-sg
+    working_dir: /var/www
+    networks:
+      - backend
+    ports:
+      - "8085:8085"
+    volumes:
+      - ./api:/var/www/api
+
+  nginx-sg:
+    image: nginx:latest
+    container_name: nginx-sg
+    networks:
+      - backend
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./api:/var/www/api
+      - ./front:/var/www/front
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - php-sg
+
+  db-sg:
+    build:
+      context: ./docker/db
+    container_name: db-sg
+    networks:
+      - backend
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: sg
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+
+  adminer-sg:
+    image: adminer
+    container_name: adminer-sg
+    environment:
+      ADMINER_DEFAULT_SERVER: db-sg
+    networks:
+      - backend
+    ports:
+      - 8088:8080
+
+networks:
+  backend:
+    driver: bridge

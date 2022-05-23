@@ -1,0 +1,29 @@
+POST {{host}}/prize
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###
+
+POST {{host}}/prize/decline
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###
+
+POST {{host}}/convert/money
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 1
+}
+
+###

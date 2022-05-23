@@ -1,0 +1,10 @@
+POST {{host}}/auth
+Accept: application/json
+Content-Type: application/json
+
+{
+    "login": "user",
+    "password": "demo1234"
+}
+
+###
