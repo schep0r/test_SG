@@ -17,6 +17,7 @@ class LoginController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
         $responseData = [];
+        $responseCode = Response::HTTP_BAD_REQUEST;
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             $responseData = ['error' => "Bad JSON data."];
@@ -31,6 +32,7 @@ class LoginController extends AbstractController
         }
 
         if (isset($user) && $user) {
+            $responseCode = Response::HTTP_OK;
             $responseData = ["user" => [
                 "id"     => $user->getId(),
                 "login"  => $user->getLogin(),
@@ -38,6 +40,6 @@ class LoginController extends AbstractController
             ]];
         }
 
-        return new JsonResponse($responseData);
+        return new JsonResponse($responseData, $responseCode);
     }
 }

@@ -9,7 +9,6 @@ use App\Exception\WrongPrizeTypeException;
 use App\Service\AuthService;
 use App\Service\ConvertService;
 use App\Service\PrizeService;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpFoundation\Exception\JsonException;
@@ -17,7 +16,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
-use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -66,7 +64,7 @@ class Application implements HttpKernelInterface
             try {
                 $response = call_user_func_array($controller, $arguments);
             } catch (JsonException | NotFoundHttpException | WrongPrizeTypeException | NoPendingPrizeException $e) {
-                $response = new JsonResponse(['error' => $e->getMessage()]);
+                $response = new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
             }
         } catch (ResourceNotFoundException $e) {
             $response = new JsonResponse(['error' => 'Not found!'], Response::HTTP_NOT_FOUND);

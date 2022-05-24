@@ -5,8 +5,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Route;
 use App\Application;
 
+require_once __DIR__ . '/../cors.php';
+
 require_once __DIR__ . '/../vendor/autoload.php';
-$routes = require_once '../routs.php';
+$routes = require_once __DIR__ . '/../routs.php';
 
 $request = Request::createFromGlobals();
 $response = new Response();
